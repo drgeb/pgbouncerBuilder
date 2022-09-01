@@ -7,7 +7,7 @@ pgbouncer-binary:
     WORKDIR /code
     RUN apt-get update && apt-get install -y git tzdata gcc build-essential cmake m4 automake libtool pandoc pkg-config libevent-dev python3
     RUN git config --global url."https://github.com/".insteadOf 'git@github.com:'
-    COPY pgbouncer pgbouncer
+    RUN git clone git@github.com:pgbouncer/pgbouncer.git
     RUN cd pgbouncer && git submodule init && git submodule update
     RUN cd pgbouncer && ./autogen.sh
     RUN cd pgbouncer && ./configure --without-openssl
@@ -104,4 +104,4 @@ pack:
             ls -al
     END
     SAVE ARTIFACT pack.log AS LOCAL build/logs/pack.log
-    SAVE ARTIFACT test_pgbouncer.tar AS LOCAL build/test_pgbouncer.tar
+    SAVE ARTIFACT paketo_build/test_pgbouncer.tar AS LOCAL build/test_pgbouncer.tar

@@ -1,0 +1,7 @@
+Package: pgbouncer
+Version: 0.0.1
+Maintainer: Gerry Bennett <gerry.bennett@ninjaone.com>
+Depends: libc6
+Architecture: amd64
+Homepage: https://www.pgouncer.org/
+Description: PGBouncer database proxy

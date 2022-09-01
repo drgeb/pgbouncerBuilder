@@ -1,3 +1,0 @@
-[submodule "pgbouncer"]
-	path = pgbouncer
-	url = git@github.com:pgbouncer/pgbouncer.git

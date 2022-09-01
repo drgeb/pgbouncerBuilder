@@ -1,0 +1,13 @@
+Package: pgbouncer
+Version: 0.0.1
+Architecture: amd64
+Maintainer: Gerry Bennett <gerry.bennett@ninjaone.com>
+Depends: libc6
+Filename: pool/main/binary-amd64/pgbouncer_0.0.1-1_amd64.deb
+Size: 488836
+MD5sum: 2b7968b47995d3b1e51cf3816844e0f3
+SHA1: 16ae76c5ee812ae5b617d1a19daae9176278f55e
+SHA256: 4d3c10fb25029c16e4999bab887642ab56b5b1d2c22977608501f4b565f1d716
+Homepage: https://www.pgouncer.org/
+Description: PGBouncer database proxy
+
