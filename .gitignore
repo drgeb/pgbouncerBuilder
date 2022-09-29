@@ -1,1 +1,3 @@
-**/build/*
+# Mac
+.DS_Store
+**/build/
