@@ -7,10 +7,10 @@ DIST_DIR=build
 
 rm -f ${DIST_DIR}/${TAR_BUILD} 2>&1 | tee ${DIST_DIR}/logs/earthly_build.log
 rm -f ${DIST_DIR}/${TAR_BUILD} 2>&1 | tee ${DIST_DIR}/test_pgbouncer.tar
-if [ -f ${DIST_DIR}/${TAR_BUILD} 2>&1 | tee ${DIST_DIR}/pgbouncer_0.0.1-1_amd64.deb ]; then
+if [ -f ${DIST_DIR}/${TAR_BUILD} ]; then
     rm -f ${DIST_DIR}/${TAR_BUILD} 2>&1 | tee ${DIST_DIR}/pgbouncer_0.0.1-1_amd64.deb
 fi
-if [ -d ${DIST_DIR}/${TAR_BUILD} 2>&1 | tee ${DIST_DIR}/logs/example-apt-repo/ ]; then
+if [ -d ${DIST_DIR}/${TAR_BUILD} ]; then
     rm -rf ${DIST_DIR}/${TAR_BUILD} 2>&1 | tee ${DIST_DIR}/logs/example-apt-repo/
 fi
 
@@ -23,6 +23,7 @@ earthly -P +pgbouncer-package 2>&1 | tee -a ${DIST_DIR}/logs/earthly_build.log
 earthly -P +generate-pgp-key 2>&1 | tee -a ${DIST_DIR}/logs/earthly_build.log
 earthly -P +create-repo 2>&1 | tee -a ${DIST_DIR}/logs/earthly_build.log
 earthly -P +repo-server 2>&1 | tee -a ${DIST_DIR}/logs/earthly_build.log
+earthly -P +install-pgbouncer 2>&1 | tee -a ${DIST_DIR}/logs/earthly_build.log
 earthly -P +pack 2>&1 | tee -a ${DIST_DIR}/logs/earthly_build.log
 
 docker load -i ${DIST_DIR}/${TAR_BUILD} 2>&1 | tee -a ${DIST_DIR}/logs/earthly_build.log

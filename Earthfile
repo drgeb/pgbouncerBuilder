@@ -72,7 +72,7 @@ repo-server:
     CMD ["python3", "-m", "http.server"]
 
 
-test:
+install-pgbouncer:
     COPY +generate-pgp-key/pgp-key.public /example.pgp
     COPY files/docker-compose.yml .
     WITH DOCKER --compose docker-compose.yml --load=repo-server:latest=+repo-server
@@ -80,15 +80,15 @@ test:
             echo "deb [arch=amd64 signed-by=/example.pgp] http://127.0.0.1:8000/apt-repo stable main" > /etc/apt/sources.list.d/example.list && \
             apt-get update && \
             apt-get install -y pgbouncer && \
-            pgbouncer
+            pgbouncer -h
     END
 
 pack:
-    RUN apt-get update
-    RUN apt-get install -y software-properties-common
-    RUN add-apt-repository ppa:cncf-buildpacks/pack-cli
-    RUN apt-get update
-    RUN apt-get install pack-cli
+    RUN apt-get update && \
+        apt-get install -y software-properties-common && \
+        apt-get install -y curl gzip tar
+
+    RUN (curl -sSL "https://github.com/buildpacks/pack/releases/download/v0.27.0/pack-v0.27.0-linux.tgz" | tar -C /usr/local/bin/ --no-same-owner -xzv pack)
 
     COPY +generate-pgp-key/pgp-key.public /example.pgp
     COPY files/docker-compose.yml .
