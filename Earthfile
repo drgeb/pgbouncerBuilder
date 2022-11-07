@@ -98,7 +98,7 @@ pack:
             echo "deb [arch=amd64 signed-by=/example.pgp] http://127.0.0.1:8000/apt-repo stable main" > /etc/apt/sources.list.d/example.list && \
             apt-get update 2>&1 | tee pack.log && \
             cd paketo_build && \
-            pack build --verbose --no-color --buildpack fagiani/apt --buildpack paketo-buildpacks/procfile@5.4.0 --builder paketobuildpacks/builder:full test/pgbouncer 2>&1 | tee pack.log && \
+            pack build --verbose --no-color --buildpack fagiani/apt --buildpack paketo-buildpacks/procfile@5.4.0 --builder paketobuildpacks/builder:base test/pgbouncer 2>&1 | tee pack.log && \
             docker save  --output test_pgbouncer.tar test/pgbouncer 2>&1 | tee pack.log
     END
     SAVE ARTIFACT pack.log AS LOCAL build/logs/pack.log
