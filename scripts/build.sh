@@ -1,4 +1,9 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
+
+set -eu
+set -o pipefail
+
+############################################################
 
 BUILD_IMAGE=earthly-buildkitd
 IMAGE=test/pgbouncer
@@ -13,10 +18,12 @@ fi
 if [ -d ${DIST_DIR}/${TAR_BUILD} ]; then
     rm -rf ${DIST_DIR}/${TAR_BUILD} 2>&1 | tee ${DIST_DIR}/logs/example-apt-repo/
 fi
-
-docker stop ${BUILD_IMAGE} 2>&1 | tee -a ${DIST_DIR}/logs/earthly_build.log
-docker rm ${BUILD_IMAGE} 2>&1 | tee -a ${DIST_DIR}/logs/earthly_build.log
-docker rmi ${IMAGE} 2>&1 | tee -a ${DIST_DIR}/logs/earthly_build.log
+echo docker stop
+docker stop ${BUILD_IMAGE}  || true | tee -a ${DIST_DIR}/logs/earthly_build.log
+echo docker rm
+docker rm ${BUILD_IMAGE}   || true | tee -a ${DIST_DIR}/logs/earthly_build.log
+echo docker rmi
+docker rmi ${IMAGE}  || true | tee -a ${DIST_DIR}/logs/earthly_build.log
 
 echo "********************************************************************************" >> ${DIST_DIR}/logs/earthly_build.log
 echo "earthly -P +pgbouncer-binary" >> ${DIST_DIR}/logs/earthly_build.log
@@ -56,4 +63,5 @@ earthly -P +pack 2>&1 | tee -a ${DIST_DIR}/logs/earthly_build.log
 echo "********************************************************************************" >> ${DIST_DIR}/logs/earthly_build.log
 echo "docker load -i ${DIST_DIR}/${TAR_BUILD}" >> ${DIST_DIR}/logs/earthly_build.log
 echo "********************************************************************************" >> ${DIST_DIR}/logs/earthly_build.log
+echo docker load -i ${DIST_DIR}/${TAR_BUILD} | tee -a ${DIST_DIR}/logs/earthly_build.log
 docker load -i ${DIST_DIR}/${TAR_BUILD} 2>&1 | tee -a ${DIST_DIR}/logs/earthly_build.log

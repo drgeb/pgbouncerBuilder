@@ -1,1 +1,1 @@
-worker: pgbouncer
+web: PATH=/layers/fagiani_apt/apt/usr/bin:/layers/fagiani_apt/apt/usr/sbin:${PATH} LD_LIBRARY_PATH=/layers/fagiani_apt/apt/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH pgbouncer
