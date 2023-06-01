@@ -1,0 +1,24 @@
+# From https://www.haproxy.org/download/2.1/src/haproxy-2.1.4.tar.gz
+# SPDX-License-Identifier: GPL-2.0-only
+#
+#
+# Reference Systemd Unit file for use with HAProxy 
+# values for EXECRELOAD very important and affects behaviour of HAProxy when it is dynamically reconfigured and reloaded for new values to take effect
+[Unit]
+Description=HAProxy 2.0.14
+After=syslog.target network.target
+
+[Service]
+EnvironmentFile=/etc/sysconfig/haproxy-2.0.14
+Environment="CONFIG=/etc/haproxy/" "PIDFILE=/var/run/haproxy.pid"
+ExecStartPre=/usr/local/sbin/haproxy -f $CONFIG -c -q $EXTRAOPTS
+ExecStart=/usr/local/sbin/haproxy -Ws -f $CONFIG -p $PIDFILE $EXTRAOPTS
+ExecReload=/usr/local/sbin/haproxy -Ws -f $CONFIG -c -q $EXTRAOPTS
+ExecReload=/bin/kill -USR2 $MAINPID
+KillMode=mixed
+Restart=always
+SuccessExitStatus=143
+Type=notify
+
+[Install]
+WantedBy=multi-user.target

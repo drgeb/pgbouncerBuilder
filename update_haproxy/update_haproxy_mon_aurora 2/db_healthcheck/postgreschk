@@ -1,0 +1,40 @@
+#!/bin/bash
+# This script checks if an Aurora Reader is accepting connections and is in recovery mode(reader) and returns 
+# a 0 or 1 exit code to the calling program.
+# 
+# THIS FILE PURELY SERVES AS A REFERENCE TO WRITE AN EXTERNAL SCRIPT FOR USE WITH HAPROXY
+# ONE SHOULD IDEALLY NOT SAVE CLEAR TEXT PASSWORDS AND SHOULD TRY AND INTEGRATE WITH AWS_SECRETS MANAGER OR OTHER METHODS
+#
+# Replace username (PGSQL_USERNAME) with appropriate username or deconstruct both username and password (PGPASSWORD) from Secrets Manager Response
+#
+# HAPROXY CALLS THIS SCRIPT WITH THE FOLLOWING ARGUEMENTS 
+# $1 = Virtual Service IP (VIP)
+# $2 = Virtual Service Port (VPT)
+# $3 = Real Server IP (RIP)
+# $4 = Real Server Port (RPT) 
+# $5 = Check Source IP 
+#
+# The script is directly referenced in each cluster configuration HAProxy file with the keyword external-check 
+# e.g external-check command /bin/postgreschk
+#
+
+PGSQL_HOST="$3"
+PGSQL_PORT="$4"
+PGSQL_DATABASE="postgres"
+PGSQL_USERNAME="postgres"
+export PGPASSWORD=""
+
+
+
+VALUE="$( /usr/bin/psql -t -h $PGSQL_HOST -U postgres -c 'select pg_is_in_recovery();' )"
+
+# pg_is_in_recovery function explained below
+# Name 			Return Type 	Description
+# pg_is_in_recovery() 	bool 		True if recovery is still in progress.
+
+if [ "$VALUE" = " t" ]
+then
+    exit 0
+else
+    exit 1
+fi
